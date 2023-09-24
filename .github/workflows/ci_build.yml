@@ -1,1 +1,31 @@
+name: CI Build
 
+on:
+  push:
+    branches:
+      - "main"
+
+  workflow_dispatch:
+
+jobs:
+  build-ci:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4.0.0
+
+      - name: setup node js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{matrix.node-version}}
+
+      - name: npm install
+        run: npm ci
+
+      - name: npm build
+        run: npm run build
